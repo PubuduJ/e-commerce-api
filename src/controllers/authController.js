@@ -1,7 +1,20 @@
 const { StatusCodes } = require('http-status-codes');
+const User = require("../models/User");
+const CustomError = require("../errors");
 
 const registerUser = async (req, res) => {
-    res.status(StatusCodes.CREATED).json({message: "register"});
+    // unique email validation can also be done using User schema unique: true property at the email field.
+    const { email, name, password } = req.body;
+    const isExist = await User.findOne({email});
+    if (isExist) {
+        throw new CustomError.BadRequestError("Email already exists");
+    }
+    // first registered user, role is an admin, rest has the role as user.
+    const userCount = await User.countDocuments({});
+    const role = (userCount === 0) ? "admin" : "user";
+
+    const user = await User.create({ name, email, password, role });
+    res.status(StatusCodes.CREATED).json({ user });
 }
 
 const loginUser = async (req, res) => {
