@@ -8,6 +8,7 @@ const xss = require("xss-clean");
 
 const express = require('express');
 const app = express();
+const morgan = require("morgan");
 const connectDB = require("./db/connect");
 
 const notFoundMiddleware = require('./middlewares/notFoundMiddleware');
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(cors());
 app.use(xss());
+app.use(morgan("tiny"));
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
