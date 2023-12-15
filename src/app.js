@@ -9,6 +9,7 @@ const xss = require("xss-clean");
 const express = require('express');
 const app = express();
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 
 // database connection
 const connectDB = require("./db/connect");
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(cors());
 app.use(xss());
+app.use(cookieParser());
 app.use(morgan("tiny"));
 
 app.use("/api/v1/auth", authRouter);

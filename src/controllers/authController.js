@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const User = require("../models/User");
 const CustomError = require("../errors");
-const {createJWT} = require("../utils")
+const {attachCookiesToResponse} = require("../utils")
 
 const registerUser = async (req, res) => {
     // unique email validation can also be done using User schema unique: true property at the email field.
@@ -17,16 +17,7 @@ const registerUser = async (req, res) => {
     const user = await User.create({ name, email, password, role });
     const tokenUser = {name: user.name, userId: user._id, role: user.role}
 
-    const token = createJWT(tokenUser);
-
-    // Send JWT using a cookie instead of sending it on response payload.
-    const oneDayInMilliseconds = 1000 * 60 * 60 * 24;
-    
-    res.cookie("token", token, {
-        httpOnly: true,
-        expires: new Date(Date.now() + oneDayInMilliseconds)
-    })
-
+    res = attachCookiesToResponse(res, tokenUser);
     res.status(StatusCodes.CREATED).json({ user: tokenUser });
 }
 
