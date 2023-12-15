@@ -27,7 +27,7 @@ app.use(cors());
 app.use(xss());
 app.use(morgan("tiny"));
 
-app.use("api/v1/auth", authRouter);
+app.use("/api/v1/auth", authRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
