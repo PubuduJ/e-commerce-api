@@ -9,8 +9,14 @@ const xss = require("xss-clean");
 const express = require('express');
 const app = express();
 const morgan = require("morgan");
+
+// database connection
 const connectDB = require("./db/connect");
 
+// routers
+const authRouter = require("./routes/authRouter");
+
+// middlewares
 const notFoundMiddleware = require('./middlewares/notFoundMiddleware');
 const errorHandlerMiddleware = require('./middlewares/errorhandlerMiddleware');
 const authenticationMiddleware = require("./middlewares/authenticationMiddleware");
@@ -20,6 +26,8 @@ app.use(helmet());
 app.use(cors());
 app.use(xss());
 app.use(morgan("tiny"));
+
+app.use("api/v1/auth", authRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
