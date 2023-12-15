@@ -19,7 +19,15 @@ const registerUser = async (req, res) => {
 
     const token = createJWT(tokenUser);
 
-    res.status(StatusCodes.CREATED).json({ user: tokenUser, token });
+    // Send JWT using a cookie instead of sending it on response payload.
+    const oneDayInMilliseconds = 1000 * 60 * 60 * 24;
+    
+    res.cookie("token", token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + oneDayInMilliseconds)
+    })
+
+    res.status(StatusCodes.CREATED).json({ user: tokenUser });
 }
 
 const loginUser = async (req, res) => {
