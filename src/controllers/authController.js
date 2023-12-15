@@ -1,6 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const User = require("../models/User");
 const CustomError = require("../errors");
+const {createJWT} = require("../utils")
 
 const registerUser = async (req, res) => {
     // unique email validation can also be done using User schema unique: true property at the email field.
@@ -14,7 +15,11 @@ const registerUser = async (req, res) => {
     const role = (userCount === 0) ? "admin" : "user";
 
     const user = await User.create({ name, email, password, role });
-    res.status(StatusCodes.CREATED).json({ user });
+    const tokenUser = {name: user.name, userId: user._id, role: user.role}
+
+    const token = createJWT(tokenUser);
+
+    res.status(StatusCodes.CREATED).json({ user: tokenUser, token });
 }
 
 const loginUser = async (req, res) => {
