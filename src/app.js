@@ -16,6 +16,7 @@ const connectDB = require("./db/connect");
 
 // routers
 const authRouter = require("./routes/authRouter");
+const userRouter = require("./routes/userRouter");
 
 // middlewares
 const notFoundMiddleware = require('./middlewares/notFoundMiddleware');
@@ -30,6 +31,8 @@ app.use(cookieParser(process.env.JWT_SECRET));
 app.use(morgan("tiny"));
 
 app.use("/api/v1/auth", authRouter);
+app.use(authenticationMiddleware);
+app.use("/api/v1/users", userRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
