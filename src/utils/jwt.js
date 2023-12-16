@@ -14,7 +14,9 @@ const attachCookiesToResponse = (res, tokenUser) => {
     const oneDayInMilliseconds = 1000 * 60 * 60 * 24;
     res.cookie("token", token, {
         httpOnly: true,
-        expires: new Date(Date.now() + oneDayInMilliseconds)
+        expires: new Date(Date.now() + oneDayInMilliseconds),
+        // signed the cookie with JWT_SECRET.
+        signed: true
     })
     return res;
 }
