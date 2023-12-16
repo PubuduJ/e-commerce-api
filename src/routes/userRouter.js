@@ -3,7 +3,7 @@ const router = express.Router();
 const authorizationMiddleware = require("../middlewares/authorizationMiddleware");
 const {getAllUsers, getSingleUser, showCurrentUser, updateUser, updateUserPassword} = require("../controllers/userController");
 
-router.route("/").get(authorizationMiddleware, getAllUsers);
+router.route("/").get(authorizationMiddleware("admin", "owner"), getAllUsers);
 
 router.route("/show-me").get(showCurrentUser);
 router.route("/:id").get(getSingleUser);
