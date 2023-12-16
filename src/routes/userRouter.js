@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const authorizationMiddleware = require("../middlewares/authorizationMiddleware");
 const {getAllUsers, getSingleUser, showCurrentUser, updateUser, updateUserPassword} = require("../controllers/userController");
 
-router.route("/").get(getAllUsers);
+router.route("/").get(authorizationMiddleware, getAllUsers);
 
 router.route("/show-me").get(showCurrentUser);
 router.route("/:id").get(getSingleUser);
