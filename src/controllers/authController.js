@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const User = require("../models/User");
 const CustomError = require("../errors");
-const {attachCookiesToResponse, hashPassword} = require("../utils")
+const {attachCookiesToResponse, hashPassword, createTokenUser} = require("../utils")
 
 const registerUser = async (req, res) => {
     // unique email validation can also be done using User schema unique: true property at the email field.
@@ -18,7 +18,7 @@ const registerUser = async (req, res) => {
     console.log(hash);
 
     const user = await User.create({ name, email, password: hash, role });
-    const tokenUser = {name: user.name, userId: user._id, role: user.role}
+    const tokenUser = createTokenUser(user);
 
     res = attachCookiesToResponse(res, tokenUser);
     res.status(StatusCodes.CREATED).json({ user: tokenUser });
@@ -41,7 +41,7 @@ const loginUser = async (req, res) => {
         throw new CustomError.UnAuthenticatedError("Invalid credentials");
     }
 
-    const tokenUser = {name: user.name, userId: user._id, role: user.role}
+    const tokenUser = createTokenUser(user);
 
     res = attachCookiesToResponse(res, tokenUser);
     res.status(StatusCodes.CREATED).json({ user: tokenUser });

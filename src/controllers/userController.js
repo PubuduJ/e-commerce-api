@@ -2,6 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const User = require("../models/User");
 const {hashPassword} = require("../utils")
 const CustomError = require("../errors");
+const {createTokenUser, attachCookiesToResponse} = require("../utils");
 
 const getAllUsers = async (req, res) => {
     // get all users which role has user without getting the password field.
@@ -22,7 +23,14 @@ const showCurrentUser = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    res.status(StatusCodes.CREATED).json({message: "update user"});
+    const {email, name} = req.body;
+    if (!email || !name) {
+        throw new CustomError.BadRequestError("Please provide all values");
+    }
+    const user = await User.findOneAndUpdate({_id: req.user.userId}, {email, name}, {new: true, runValidators: true});
+    const tokenUser = createTokenUser(user);
+    res = attachCookiesToResponse(res, tokenUser);
+    res.status(StatusCodes.CREATED).json(tokenUser);
 }
 
 const updateUserPassword = async (req, res) => {
