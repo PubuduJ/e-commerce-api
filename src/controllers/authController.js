@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const User = require("../models/User");
 const CustomError = require("../errors");
-const {attachCookiesToResponse} = require("../utils")
+const {attachCookiesToResponse, hashPassword} = require("../utils")
 
 const registerUser = async (req, res) => {
     // unique email validation can also be done using User schema unique: true property at the email field.
@@ -14,7 +14,10 @@ const registerUser = async (req, res) => {
     const userCount = await User.countDocuments({});
     const role = (userCount === 0) ? "admin" : "user";
 
-    const user = await User.create({ name, email, password, role });
+    const hash = await hashPassword(password);
+    console.log(hash);
+
+    const user = await User.create({ name, email, password: hash, role });
     const tokenUser = {name: user.name, userId: user._id, role: user.role}
 
     res = attachCookiesToResponse(res, tokenUser);
