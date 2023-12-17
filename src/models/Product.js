@@ -33,7 +33,7 @@ const ProductSchema = new mongoose.Schema({
         required: [true, "Please provide product category"],
         enum: {
             values: ["office", "kitchen", "bedroom"],
-            message: "{VALUE} is not supported"
+            message: "{VALUE} is not supported for category"
         }
     },
     company: {
@@ -41,11 +41,12 @@ const ProductSchema = new mongoose.Schema({
         required: [true, "Please provide product company"],
         enum: {
             values: ["ikea", "liddy", "marcos"],
-            message: "{VALUE} is not supported"
+            message: "{VALUE} is not supported for company"
         }
     },
     colors: {
         type: [String],
+        default: ["#222"],
         required: true,
     },
     featured: {
@@ -70,6 +71,6 @@ const ProductSchema = new mongoose.Schema({
         ref: "User",
         required: true
     }
-}, {timestamps: true})
+}, { timestamps: true })
 
 module.exports = mongoose.model("Product", ProductSchema);
