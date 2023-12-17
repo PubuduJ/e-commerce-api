@@ -26,6 +26,7 @@ const connectDB = require("./db/connect");
 const authRouter = require("./routes/authRouter");
 const userRouter = require("./routes/userRouter");
 const productRouter = require("./routes/productRouter");
+const reviewRouter = require("./routes/reviewRouter");
 
 // middlewares
 const notFoundMiddleware = require('./middlewares/notFoundMiddleware');
@@ -44,6 +45,7 @@ app.use(fileUpload({useTempFiles: true}));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", authenticationMiddleware, userRouter);
 app.use("/api/v1/products", productRouter);
+app.use("/api/v1/reviews", reviewRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
