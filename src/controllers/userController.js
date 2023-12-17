@@ -2,7 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const User = require("../models/User");
 const {hashPassword} = require("../utils")
 const CustomError = require("../errors");
-const {createTokenUser, attachCookiesToResponse} = require("../utils");
+const {createTokenUser, attachCookiesToResponse, checkPermission} = require("../utils");
 
 const getAllUsers = async (req, res) => {
     // get all users which role has user without getting the password field.
@@ -15,6 +15,7 @@ const getSingleUser = async (req, res) => {
     if (!user) {
         throw new CustomError.NotFoundError(`No user with id: ${req.params.id}`);
     }
+    checkPermission(req.user, user._id);
     res.status(StatusCodes.OK).json({ user });
 }
 
