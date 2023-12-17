@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authorizationMiddleware = require("../middlewares/authorizationMiddleware");
-const {getAllUsers, getSingleUser, showCurrentUser, updateUser, updateUserPassword} = require("../controllers/userController");
+const { getAllUsers, getSingleUser, showCurrentUser, updateUser, updateUserPassword } = require("../controllers/userController");
 
 router.route("/").get(authorizationMiddleware("admin", "owner"), getAllUsers);
 
