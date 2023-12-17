@@ -54,6 +54,7 @@ const uploadProductImage = async (req, res) => {
     if (!req.files) {
         throw new CustomError.BadRequestError("No file uploaded");
     }
+    // get the image with image property.
     const productImage = req.files.image;
     // Check the format.
     if (!productImage.mimetype.startsWith("image")) {

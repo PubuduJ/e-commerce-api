@@ -26,7 +26,7 @@ const ProductSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        default: "/uploads/example.jpeg",
+        default: "no-image",
     },
     category: {
         type: String,
