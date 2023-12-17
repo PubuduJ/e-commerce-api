@@ -8,7 +8,7 @@ router.route("/")
 .post([authenticationMiddleware,authorizationMiddleware("admin", "owner")], createProduct)
 .get(getAllProducts);
 
-router.route("/uplaod-image")
+router.route("/upload-image")
 .post([authenticationMiddleware,authorizationMiddleware("admin", "owner")], uploadProductImage);
 
 router.route("/:id")
