@@ -42,7 +42,19 @@ const getAllReviews = async (req, res) => {
 
 const getSingleReview = async (req, res) => {
     const {id: reviewId} = req.params;
-    const review = await Review.findOne({_id: reviewId});
+    const review = await Review.findOne({_id: reviewId})
+    .populate({
+        // current document field name.
+        path: "product",
+        // product document fields.
+        select: "name company price"
+    })
+    .populate({
+        // current document field name.
+        path: "user",
+        // user document fields.
+        select: "name role"
+    });
 
     if (!review) {
         throw new CustomError.NotFoundError(`No review with id: ${reviewId}`);
