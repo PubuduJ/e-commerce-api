@@ -1,5 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 const Product = require("../models/Product");
+const Review = require("../models/Review");
 const CustomError = require("../errors");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
@@ -41,6 +42,8 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
     const {id: productId} = req.params;
 
+    // delete all reviews associated to the product first.
+    await Review.deleteMany({product: productId})
     const product = await Product.findByIdAndDelete({_id:productId});
 
     if (!product) {
