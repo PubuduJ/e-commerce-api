@@ -71,6 +71,20 @@ const ProductSchema = new mongoose.Schema({
         ref: "User",
         required: true
     }
-}, { timestamps: true })
+}, { 
+    timestamps: true,
+    // mongoose virtuals to get reviews for the particular product.
+    toJSON: { virtuals: true } ,
+    toObject: { virtuals: true }
+})
+
+ProductSchema.virtual("reviews", {
+    ref: "Review",
+    localField: "_id",
+    foreignField: "product",
+    justOne: false,
+    // get all the reviews which match to the rating as 4.
+    // match: { rating: 4 }
+})
 
 module.exports = mongoose.model("Product", ProductSchema);
