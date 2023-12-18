@@ -23,7 +23,20 @@ const createReview = async (req, res) => {
 }
 
 const getAllReviews = async (req, res) => {
-    const reviews = await Review.find({});
+    // Populate method can be used to get data from other collections whitch has reference to the current collection.
+    const reviews = await Review.find({})
+    .populate({
+        // current document field name.
+        path: "product",
+        // product document fields.
+        select: "name company price"
+    })
+    .populate({
+        // current document field name.
+        path: "user",
+        // user document fields.
+        select: "name role"
+    });
     res.status(StatusCodes.OK).json({reviews, count: reviews.length});
 }
 
