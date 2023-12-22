@@ -1,7 +1,7 @@
 # E Commerce API <img src="assets/logo.png" alt="drawing" width="27px"/>
 
 
-The E-commerce API platform project encompasses functionalities including **user authentication and authorization,** 
+The e-commerce api platform project encompasses functionalities including **user authentication and authorization,** 
 manipulation of **user data, creation and management of products,** as well as the handling of **product reviews and associated data.** 
 Its primary objective was to advance expertise in Node.js, Express, and MongoDB application development while aiming to comprehend 
 and enhance these specific areas within the context of an operational API.
